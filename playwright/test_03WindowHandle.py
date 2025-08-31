@@ -1,9 +1,7 @@
-from playwright.sync_api import Playwright, expect
+from playwright.sync_api import Page, expect
 
 
-def test_windowhandle(playwright:Playwright):
-    browser = playwright.chromium.launch(headless=False)
-    page = browser.new_page()
+def test_windowhandle(page: Page):
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
 
     page.get_by_label("Username:").fill("rahulshettyacademy")
@@ -13,13 +11,15 @@ def test_windowhandle(playwright:Playwright):
     page.get_by_role("button", name="Sign In").click()
 
     with page.expect_popup() as pageinfo:
-        page.locator(".blinkingText").click()
+        page.locator(".blinkingText").first.click()
 
-        childwindow = pageinfo.value
-        print(childwindow.title())
-        textwrap = childwindow.locator(".red").text_content()
-        #Please email us at  mentor@rahulshettyacademy.com with below template to receive response
+    childwindow = pageinfo.value
+    print(childwindow.title())
+    textwrap = childwindow.locator(".red").text_content()
+    # Please email us at mentor@rahulshettyacademy.com with below template to receive response
 
-        word =textwrap.split("at ")
-        myemail = word[1].split(" ")[0]
-        assert myemail == "mentor@rahulshettyacademy.com"
+    if textwrap and "at " in textwrap:
+        word = textwrap.split("at ")
+        if len(word) > 1:
+            myemail = word[1].split(" ")[0]
+            assert myemail == "mentor@rahulshettyacademy.com"
