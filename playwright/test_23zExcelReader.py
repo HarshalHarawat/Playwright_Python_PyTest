@@ -27,12 +27,10 @@ def test_print():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))   #used to get the absolute path
     path = os.path.join(BASE_DIR, "..", "excel", "TestData.xlsx")   #append the absolut path with file path
     work_book = openpyxl.load_workbook(path)
-    sheetName = "Sheet1"
+    sheetName = "Creds"
 
     row = getRow(path,sheetName)
     cols = getCols(path,sheetName)
     print(row,cols)
 
     print(getCellValue(path,sheetName,2,2))
-
-    setCellValue(path,sheetName,2,3,"DOB")
